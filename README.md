@@ -1,24 +1,31 @@
-# Delivery Logistics ERP — Frontend Only
+# react-crud-local
 
-A frontend-only demo for delivery logistics operations. Includes independent micro-app pages (Employees, Drivers, Vehicles, Hubs, Customers, Orders, Trips, POD, Fuel, Expenses, Invoices, Reports), realistic local seed data, role simulation (admin/employee/driver), print-ready sections, and per-module JSON import/export. **No backend.**
+Frontend-only, full-CRUD starter using React + Vite + localStorage.
+No backend, no database—clean UI, simple hooks, print-ready views, and import/export for data.
 
-**Live (Netlify):** https://delivery-logistics-erp-frontend.netlify.app  
-**GitHub:** https://github.com/a2rp/delivery-logistics-erp-frontend
-
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/a2rp/delivery-logistics-erp-frontend)
+**Live (Netlify):** https://a2rp.github.io/react-crud-local/  
+**GitHub:** https://github.com/a2rp/react-crud-local
 
 ---
 
 ## Quick Start
 
 ```bash
-# clone
-git clone https://github.com/a2rp/delivery-logistics-erp-frontend.git
-cd delivery-logistics-erp-frontend
+# 1) Clone
+git clone https://github.com/a2rp/react-crud-local.git
+cd react-crud-local
 
-# install
+# 2) Install deps
 npm install
 
-# dev
+# 3) Run dev
 npm run dev
+# Vite dev server prints the local URL (usually http://localhost:5173)
+
+# 4) Build (optional)
+npm run build
+
+# 5) Preview production build (optional)
+npm run preview
+
 ```
