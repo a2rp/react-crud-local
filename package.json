@@ -1,8 +1,9 @@
 {
-    "name": "frontend",
+    "name": "react-crud-local",
     "private": true,
-    "version": "0.0.0",
+    "version": "1.0.0",
     "type": "module",
+    "description": "A local-first React CRUD workspace using browser storage.",
     "scripts": {
         "dev": "vite",
         "build": "vite build",
@@ -11,6 +12,7 @@
         "predeploy": "npm run build && node -e \"require('fs').copyFileSync('dist/index.html','dist/404.html')\"",
         "deploy": "npx gh-pages -d dist -b gh-pages"
     },
+    "homepage": "https://a2rp.github.io/react-crud-local/",
     "dependencies": {
         "@emotion/react": "^11.14.0",
         "@emotion/styled": "^11.14.1",

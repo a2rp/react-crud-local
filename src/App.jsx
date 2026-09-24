@@ -1,134 +1,95 @@
-import ScrollToTop from './components/ScrollToTop';
-import Styled from './App.styled';
-import { Route, Routes, NavLink } from 'react-router-dom';
-import { lazy, Suspense, useEffect, useRef, useState } from 'react';
-import { MdArrowUpward, MdMenuOpen } from 'react-icons/md';
-import { TbSunMoon } from 'react-icons/tb';
-import { IoNotificationsCircleSharp } from 'react-icons/io5';
-import { CiSettings } from 'react-icons/ci';
-import { FaRegUser } from 'react-icons/fa';
-import { Box, CircularProgress } from '@mui/material';
-import Footer from './components/footer';
-import NavList from './components/navList';
-import AppRoutes from './AppRoutes';
-import { RiAccountPinCircleFill } from 'react-icons/ri';
+import { useEffect, useRef, useState } from "react";
+import { NavLink } from "react-router-dom";
+import { MdArrowUpward, MdMenuOpen } from "react-icons/md";
+import { TbSunMoon } from "react-icons/tb";
+import Footer from "./components/footer";
+import NavList from "./components/navList";
+import AppRoutes from "./AppRoutes";
 import Breadcrumbs from "./components/Breadcrumbs";
-// --- Simple placeholder for design-only routes (replace with real pages later) ---
-const Placeholder = ({ title }) => (
-    <div className="pagePlaceholder">
-        <h2>{title}</h2>
-        <p>
-            This is a design-only placeholder page for <b>{title}</b>. Replace with the real component when ready.
-        </p>
-    </div>
-);
+import ScrollToTop from "./components/ScrollToTop";
+import Styled from "./App.styled";
 
-// --- Theme handling ---
-const THEME_KEY = 'theme'; // 'dark' | 'light'
+const THEME_KEY = "theme";
+
 const getInitialTheme = () => {
     try {
         const saved = localStorage.getItem(THEME_KEY);
-        if (saved === 'light' || saved === 'dark') return saved;
-    } catch { }
-    // fall back to OS preference
-    if (typeof window !== 'undefined' && window.matchMedia) {
-        return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        if (saved === "light" || saved === "dark") return saved;
+    } catch {
+        // Continue with the system preference.
     }
-    return 'dark';
+    return window.matchMedia?.("(prefers-color-scheme: light)").matches ? "light" : "dark";
 };
 
 const App = () => {
     const [displayNav, setDisplayNav] = useState(true);
-    const handleDisplayNav = () => setDisplayNav(prev => !prev);
-
-    // ↑ Scroll-to-top state + ref
-    const contentRef = useRef(null);
-    const [showScrollTop, setShowScrollTop] = useState(false);
-
-    // Theme state
     const [theme, setTheme] = useState(getInitialTheme);
+    const [showScrollTop, setShowScrollTop] = useState(false);
+    const contentRef = useRef(null);
 
     useEffect(() => {
-        const el = contentRef.current;
-        if (!el) return;
-        const onScroll = () => setShowScrollTop(el.scrollTop > 100);
-        onScroll();
-        el.addEventListener('scroll', onScroll);
-        return () => el.removeEventListener('scroll', onScroll);
-    }, []);
-
-    // Apply theme on html[data-theme]
-    useEffect(() => {
-        const root = document.documentElement;
-        root.setAttribute('data-theme', theme);
-        try { localStorage.setItem(THEME_KEY, theme); } catch { }
+        document.documentElement.setAttribute("data-theme", theme);
+        try { localStorage.setItem(THEME_KEY, theme); } catch { /* Preference is optional. */ }
     }, [theme]);
 
-    const toggleTheme = () => setTheme(t => (t === 'light' ? 'dark' : 'light'));
-
-    const scrollToTop = () => {
-        contentRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
-    };
+    useEffect(() => {
+        const content = contentRef.current;
+        if (!content) return undefined;
+        const handleScroll = () => setShowScrollTop(content.scrollTop > 180);
+        handleScroll();
+        content.addEventListener("scroll", handleScroll);
+        return () => content.removeEventListener("scroll", handleScroll);
+    }, []);
 
     return (
         <Styled.Wrapper>
             <Styled.Header>
                 <Styled.LogoLinkWrapper>
-                    <Styled.NavLinkWrapper onClick={handleDisplayNav} title="Toggle Navigation">
-                        <MdMenuOpen size={20} />
-                    </Styled.NavLinkWrapper>
-                    <NavLink to="/" title="React CRUD Local">React CRUD Local</NavLink>
-                </Styled.LogoLinkWrapper>
-
-                <Styled.Heading>
-                    <div
-                        className="themeToggle"
-                        title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} theme`}
-                        role="button"
-                        aria-pressed={theme === 'light' ? 'true' : 'false'}
-                        onClick={toggleTheme}
+                    <Styled.NavLinkWrapper
+                        type="button"
+                        onClick={() => setDisplayNav((value) => !value)}
+                        title={displayNav ? "Hide navigation" : "Show navigation"}
+                        aria-label={displayNav ? "Hide navigation" : "Show navigation"}
                     >
-                        <TbSunMoon />
-                    </div>
+                        <MdMenuOpen size={21} aria-hidden="true" />
+                    </Styled.NavLinkWrapper>
+                    <NavLink to="/" title="React CRUD Local home">
+                        <img src={`${import.meta.env.BASE_URL}logo.png`} alt="Ashish Ranjan logo" />
+                        <span><small>LOCAL WORKSPACE</small>React CRUD Local</span>
+                    </NavLink>
+                </Styled.LogoLinkWrapper>
+                <Styled.Heading>
+                    <span className="status">Browser storage</span>
+                    <button
+                        className="themeToggle"
+                        type="button"
+                        title={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
+                        aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
+                        onClick={() => setTheme((value) => (value === "light" ? "dark" : "light"))}
+                    >
+                        <TbSunMoon aria-hidden="true" />
+                    </button>
                 </Styled.Heading>
             </Styled.Header>
 
             <Styled.Main>
                 <Styled.NavWrapper className={displayNav ? "active" : ""}>
-                    <div className="navInner">
-                        <NavList />
-                    </div>
+                    <div className="navInner"><NavList /></div>
                 </Styled.NavWrapper>
-
-                <Styled.ContentWrapper id="scroll-root" data-scroll-root ref={contentRef}>
+                <Styled.ContentWrapper id="scroll-root" ref={contentRef}>
                     <Styled.RoutesWrapper>
                         <Breadcrumbs />
-                        <Suspense
-                            fallback={
-                                <Box sx={{
-                                    width: '100%', height: '200px',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center'
-                                }}>
-                                    <CircularProgress />
-                                </Box>
-                            }
-                        >
-                            <AppRoutes />
-                        </Suspense>
+                        <AppRoutes />
                     </Styled.RoutesWrapper>
-
-                    <Styled.Footer>
-                        <Footer />
-                    </Styled.Footer>
+                    <Styled.Footer><Footer /></Styled.Footer>
                 </Styled.ContentWrapper>
             </Styled.Main>
 
             {showScrollTop && (
-                <Styled.ScrollTopBtn onClick={scrollToTop} aria-label="Scroll to top" title="Scroll to top">
-                    <MdArrowUpward size={20} />
+                <Styled.ScrollTopBtn type="button" onClick={() => contentRef.current?.scrollTo({ top: 0, behavior: "smooth" })} aria-label="Scroll to top" title="Scroll to top">
+                    <MdArrowUpward size={20} aria-hidden="true" />
                 </Styled.ScrollTopBtn>
             )}
-
             <ScrollToTop />
         </Styled.Wrapper>
     );
