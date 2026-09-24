@@ -1,0 +1,10 @@
+import{d as r,j as e,M as a,f as s,g as t}from"./index-D4UouXVo.js";const i=r.section`
+    max-width: 980px; padding: 36px 0 60px;
+    .eyebrow { color: var(--accent); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; }
+    h1 { max-width: 760px; margin: 10px 0 14px; font-size: clamp(2.4rem, 6vw, 5.4rem); line-height: 0.98; }
+    .intro { max-width: 680px; color: var(--muted); font-size: 1.05rem; }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 32px; }
+    article { padding: 22px; border: 1px solid var(--border); border-radius: 15px; background: var(--card); transition: border-color 0.2s ease, box-shadow 0.2s ease; &:hover { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); } }
+    svg { color: var(--accent); font-size: 26px; } h2 { margin: 15px 0 8px; font-size: 1.15rem; } article p { color: var(--muted); font-size: 0.9rem; }
+    @media (max-width: 720px) { .cards { grid-template-columns: 1fr; } }
+`,d={Wrapper:i},c=()=>e.jsxs(d.Wrapper,{children:[e.jsx("span",{className:"eyebrow",children:"ABOUT THIS PROJECT"}),e.jsx("h1",{children:"Local-first CRUD, kept readable."}),e.jsx("p",{className:"intro",children:"React CRUD Local is a small frontend workspace for practicing record management without requiring a server or database."}),e.jsxs("div",{className:"cards",children:[e.jsxs("article",{children:[e.jsx(a,{"aria-hidden":"true"}),e.jsx("h2",{children:"Browser storage"}),e.jsx("p",{children:"Records are persisted in localStorage so the workspace stays useful after a refresh."})]}),e.jsxs("article",{children:[e.jsx(s,{"aria-hidden":"true"}),e.jsx("h2",{children:"Clear interactions"}),e.jsx("p",{children:"Add, edit, complete and delete actions are kept close to the data they change."})]}),e.jsxs("article",{children:[e.jsx(t,{"aria-hidden":"true"}),e.jsx("h2",{children:"Reusable shell"}),e.jsx("p",{children:"The theme, navigation, breadcrumbs and route structure make the app easy to extend."})]})]})]});export{c as default};
