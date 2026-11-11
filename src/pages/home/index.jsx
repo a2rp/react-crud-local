@@ -14,7 +14,16 @@ const starterItems = [{
 const readItems = () => {
     try {
         const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
-        return Array.isArray(saved) ? saved : starterItems;
+        if (!Array.isArray(saved)) return starterItems;
+        return saved.filter((item) => (
+            item &&
+            typeof item.id === "string" &&
+            typeof item.title === "string" &&
+            typeof item.details === "string" &&
+            typeof item.completed === "boolean" &&
+            typeof item.updatedAt === "string" &&
+            Number.isFinite(Date.parse(item.updatedAt))
+        ));
     } catch { return starterItems; }
 };
 
@@ -25,8 +34,16 @@ const Home = () => {
     const [items, setItems] = useState(readItems);
     const [form, setForm] = useState({ title: "", details: "" });
     const [editingId, setEditingId] = useState(null);
+    const [storageAvailable, setStorageAvailable] = useState(true);
 
-    useEffect(() => { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); }, [items]);
+    useEffect(() => {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+            setStorageAvailable(true);
+        } catch {
+            setStorageAvailable(false);
+        }
+    }, [items]);
 
     const completedCount = useMemo(() => items.filter((item) => item.completed).length, [items]);
     const handleChange = (event) => setForm((current) => ({ ...current, [event.target.name]: event.target.value }));
@@ -50,7 +67,11 @@ const Home = () => {
     const editItem = (item) => { setEditingId(item.id); setForm({ title: item.title, details: item.details }); };
     const deleteItem = (id) => { setItems((current) => current.filter((item) => item.id !== id)); if (editingId === id) resetForm(); };
     const toggleItem = (id) => setItems((current) => current.map((item) => item.id === id ? { ...item, completed: !item.completed, updatedAt: new Date().toISOString() } : item));
-    const clearItems = () => { setItems([]); resetForm(); };
+    const clearItems = () => {
+        if (!window.confirm("Clear all records saved in this browser?")) return;
+        setItems([]);
+        resetForm();
+    };
 
     return (
         <Styled.Wrapper>
@@ -60,7 +81,7 @@ const Home = () => {
                     <h1>Keep small records simple.</h1>
                     <p>A focused React workspace for creating, editing and managing records directly in your browser.</p>
                 </div>
-                <div className="storageBadge"><MdStorage aria-hidden="true" /><span><strong>Private by default</strong><small>Saved in localStorage</small></span></div>
+                <div className="storageBadge"><MdStorage aria-hidden="true" /><span><strong>Browser only</strong><small>{storageAvailable ? "Saved in this browser" : "Session only — storage unavailable"}</small></span></div>
             </Styled.Hero>
             <Styled.Stats>
                 <article><strong>{items.length}</strong><span>Total records</span></article>

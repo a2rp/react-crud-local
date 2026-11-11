@@ -9,7 +9,7 @@ import Breadcrumbs from "./components/Breadcrumbs";
 import ScrollToTop from "./components/ScrollToTop";
 import Styled from "./App.styled";
 
-const THEME_KEY = "theme";
+const THEME_KEY = "react-crud-local-theme";
 
 const getInitialTheme = () => {
     try {

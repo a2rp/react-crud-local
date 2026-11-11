@@ -7,6 +7,8 @@ A small React and Vite workspace for creating, editing, completing and deleting 
 ## Features
 
 - Local CRUD operations with browser persistence
+- Validates saved records and keeps working in session if browser storage is unavailable
+- Confirmation before clearing all records
 - Light and dark themes
 - Searchable navigation with Home and About routes
 - Responsive layout with an accessible keyboard-friendly interface
@@ -14,7 +16,7 @@ A small React and Vite workspace for creating, editing, completing and deleting 
 
 ## Tech stack
 
-React, Vite, React Router, Material UI, styled-components and react-icons.
+React, Vite, React Router, Material UI, styled-components and react-icons. Records stay in this browser; the app has no backend or account sync.
 
 ## Run locally
 
